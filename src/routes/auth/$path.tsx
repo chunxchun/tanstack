@@ -10,7 +10,7 @@ const validAuthPathSegments = new Set([
 ])
 
 export const Route = createFileRoute("/auth/$path")({
-  beforeLoad({ params: { path } }) {
+  beforeLoad: ({ params: { path } }) => {
     if (!validAuthPathSegments.has(path)) {
       throw redirect({ to: "/" })
     }

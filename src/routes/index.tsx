@@ -1,7 +1,8 @@
 import { Button } from "#/components/ui/button";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { authClient } from "@/lib/auth-client";
 import { getSession } from "#/lib/auth.functions";
+import { UserButton } from "#/components/auth/user/user-button";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -19,6 +20,10 @@ function Home() {
       <p className="mt-4 text-lg">
         Edit <code>src/routes/index.tsx</code> to get started.
       </p>
+      <UserButton />
+      <Link to="/organization"><Button>Go to Organization</Button></Link>
+      <Link to="/dashboard">Go to Dashboard</Link>
+      <Link to="/user">Go to User</Link>
       {/* {!session ? (
         <Button
           onClick={() => {

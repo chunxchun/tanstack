@@ -7,18 +7,20 @@ import { getRequestHeaders } from "@tanstack/react-start/server";
 
 import { auth } from "@/lib/auth";
 import { authClient } from "@/lib/auth-client";
-import { getSession } from "@/lib/auth.functions";
+// import { getSession } from "@/lib/auth.functions";
 
 export const Route = createFileRoute("/dashboard")({
-  async beforeLoad({ context: { queryClient }, location }) {
-    const ensureSession = createIsomorphicFn()
+  beforeLoad: async ({ context: { queryClient }, location }) => {
+     const ensureSession = createIsomorphicFn()
       .server(() =>
         ensureSessionServer(queryClient, auth, {
           headers: getRequestHeaders(),
         }),
       )
       .client(() => ensureSessionClient(queryClient, authClient));
+
     const session = await ensureSession();
+    
     if (!session) {
       throw redirect({
         to: "/auth/$path",
@@ -26,8 +28,28 @@ export const Route = createFileRoute("/dashboard")({
         search: { redirectTo: location.href },
       });
     }
+    
     return { session };
   },
+  // async beforeLoad({ context: { queryClient }, location }) {
+  //   const ensureSession = createIsomorphicFn()
+  //     .server(() =>
+  //       ensureSessionServer(queryClient, auth, {
+  //         headers: getRequestHeaders(),
+  //       }),
+  //     )
+  //     .client(() => ensureSessionClient(queryClient, authClient));
+  //   const session = await ensureSession();
+  //   if (!session) {
+  //     throw redirect({
+  //       to: "/auth/$path",
+  //       params: { path: "sign-in" },
+  //       search: { redirectTo: location.href },
+  //     });
+  //   }
+  //   return { session };
+  // },
+
   // beforeLoad: async () => {
   //   const session = await getSession();
   //   if (!session) {
@@ -40,10 +62,12 @@ export const Route = createFileRoute("/dashboard")({
 
 function Dashboard() {
   const { session } = Route.useRouteContext();
-  <div className="flex flex-col items-center my-auto">
-    <h1 className="text-2xl">Hello, {session.user.email}</h1>
-    <Link to="/auth/$path" params={{ path: "sign-out" }}>
-      Sign Out
-    </Link>
-  </div>;
+  return (
+    <div className="flex flex-col items-center my-auto">
+      <h1 className="text-2xl">Hello, {session.user.email}</h1>
+      <Link to="/auth/$path" params={{ path: "sign-out" }}>
+        Sign Out
+      </Link>
+    </div>
+  );
 }
