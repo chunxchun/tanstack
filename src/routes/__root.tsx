@@ -12,6 +12,7 @@ import type { ReactNode } from "react";
 import { Providers } from "@/components/providers";
 import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
+import{ Header } from "@/components/header";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -47,6 +48,7 @@ function RootDocument({ children }: { children: ReactNode }) {
       </head>
       <body>
         <Providers>
+          <Header />
           <main>{children}</main>
         </Providers>
         <Toaster />
