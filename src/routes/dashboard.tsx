@@ -65,6 +65,7 @@ function Dashboard() {
   return (
     <div className="flex flex-col items-center my-auto">
       <h1 className="text-2xl">Hello, {session.user.email}</h1>
+      <pre>{JSON.stringify(session.user.role, null, 2) }</pre>
       <Link to="/auth/$path" params={{ path: "sign-out" }}>
         Sign Out
       </Link>

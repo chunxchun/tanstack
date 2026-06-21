@@ -13,12 +13,12 @@ export const auth = betterAuth({
   plugins: [admin(), organization({
     ac,
     roles: {
-      ROLES.USER,
-      ROLES.ADMIN,
-      ROLES.MASTER_FRANCHISE,
-      ROLES.FRANCHISEE_OWNER,
-      ROLES.FRANCHISEE_MANAGER,
-      ROLES.FRANCHISEE_EMPLOYEE,
+      user: ROLES.USER,
+      admin: ROLES.ADMIN,
+      masterFranchise: ROLES.MASTER_FRANCHISE,
+      franchiseeOwner: ROLES.FRANCHISEE_OWNER,
+      franchiseeManager: ROLES.FRANCHISEE_MANAGER,
+      franchiseeEmployee: ROLES.FRANCHISEE_EMPLOYEE,
     }
   }), tanstackStartCookies()], // tanstackStartCookies should be the last plugin in the array
 });

@@ -69,9 +69,9 @@ const OrganizationSlugDashboardRoute =
     getParentRoute: () => rootRouteImport,
   } as any)
 const OrganizationSlugPathRoute = OrganizationSlugPathRouteImport.update({
-  id: '/$slug/$path',
-  path: '/$slug/$path',
-  getParentRoute: () => OrganizationRoute,
+  id: '/organization/$slug/$path',
+  path: '/organization/$slug/$path',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiOrganizationCreateRoute = ApiOrganizationCreateRouteImport.update({
   id: '/api/organization/create',
@@ -183,6 +183,10 @@ export interface RootRouteChildren {
   SettingsPathRoute: typeof SettingsPathRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiOrganizationCreateRoute: typeof ApiOrganizationCreateRoute
+<<<<<<< HEAD
+=======
+  OrganizationSlugPathRoute: typeof OrganizationSlugPathRoute
+>>>>>>> ea11dca (add feat: user cannot create organization)
   OrganizationSlugDashboardRoute: typeof OrganizationSlugDashboardRoute
 }
 
@@ -253,10 +257,10 @@ declare module '@tanstack/react-router' {
     }
     '/organization/$slug/$path': {
       id: '/organization/$slug/$path'
-      path: '/$slug/$path'
+      path: '/organization/$slug/$path'
       fullPath: '/organization/$slug/$path'
       preLoaderRoute: typeof OrganizationSlugPathRouteImport
-      parentRoute: typeof OrganizationRoute
+      parentRoute: typeof rootRouteImport
     }
     '/api/organization/create': {
       id: '/api/organization/create'
@@ -286,6 +290,10 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsPathRoute: SettingsPathRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiOrganizationCreateRoute: ApiOrganizationCreateRoute,
+<<<<<<< HEAD
+=======
+  OrganizationSlugPathRoute: OrganizationSlugPathRoute,
+>>>>>>> ea11dca (add feat: user cannot create organization)
   OrganizationSlugDashboardRoute: OrganizationSlugDashboardRoute,
 }
 export const routeTree = rootRouteImport
