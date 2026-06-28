@@ -183,10 +183,7 @@ export interface RootRouteChildren {
   SettingsPathRoute: typeof SettingsPathRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiOrganizationCreateRoute: typeof ApiOrganizationCreateRoute
-<<<<<<< HEAD
-=======
   OrganizationSlugPathRoute: typeof OrganizationSlugPathRoute
->>>>>>> ea11dca (add feat: user cannot create organization)
   OrganizationSlugDashboardRoute: typeof OrganizationSlugDashboardRoute
 }
 
@@ -290,10 +287,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsPathRoute: SettingsPathRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiOrganizationCreateRoute: ApiOrganizationCreateRoute,
-<<<<<<< HEAD
-=======
   OrganizationSlugPathRoute: OrganizationSlugPathRoute,
->>>>>>> ea11dca (add feat: user cannot create organization)
   OrganizationSlugDashboardRoute: OrganizationSlugDashboardRoute,
 }
 export const routeTree = rootRouteImport
