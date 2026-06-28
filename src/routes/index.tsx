@@ -21,9 +21,15 @@ function Home() {
         Edit <code>src/routes/index.tsx</code> to get started.
       </p>
       <UserButton />
-      <Link to="/organization"><Button>Go to Organization</Button></Link>
-      <Link to="/dashboard">Go to Dashboard</Link>
-      <Link to="/user">Go to User</Link>
+      <Link to="/organization">
+        <Button>Go to Organization</Button>
+      </Link>
+      <Link to="/dashboard">
+        <Button>Go to Dashboard</Button>
+      </Link>
+      <Link to="/user">
+        <Button>Go to User</Button>
+      </Link>
       {/* {!session ? (
         <Button
           onClick={() => {

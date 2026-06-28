@@ -3,7 +3,7 @@ import { adminClient, organizationClient } from "better-auth/client/plugins";
 import { ac, roles as ROLES } from "@/lib/permissions";
 
 export const authClient = createAuthClient({
-  baseURL: "https://tanstack.find2meals.workers.dev/",
+  baseURL: process.env.BETTER_AUTH_URL,
   plugins: [
     adminClient(),
     organizationClient({

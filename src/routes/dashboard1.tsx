@@ -9,7 +9,7 @@ import { auth } from "@/lib/auth";
 import { authClient } from "@/lib/auth-client";
 // import { getSession } from "@/lib/auth.functions";
 
-export const Route = createFileRoute("/dashboard")({
+export const Route = createFileRoute("/dashboard1")({
   beforeLoad: async ({ context: { queryClient }, location }) => {
      const ensureSession = createIsomorphicFn()
       .server(() =>

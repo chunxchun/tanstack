@@ -147,7 +147,7 @@ export function Auth({
   return (
     <AuthView
       className={className}
-      socialLayout={socialLayout}
+     socialLayout={socialLayout}
       socialPosition={socialPosition}
     />
   )

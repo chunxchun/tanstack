@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UserRouteImport } from './routes/user'
 import { Route as Organization1RouteImport } from './routes/organization1'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as Dashboard1RouteImport } from './routes/dashboard1'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OrganizationIndexRouteImport } from './routes/organization/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as SettingsPathRouteImport } from './routes/settings/$path'
 import { Route as AuthPathRouteImport } from './routes/auth/$path'
 import { Route as AdminCreateUserRouteImport } from './routes/admin/create-user'
@@ -37,14 +39,24 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const Dashboard1Route = Dashboard1RouteImport.update({
+  id: '/dashboard1',
+  path: '/dashboard1',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrganizationIndexRoute = OrganizationIndexRouteImport.update({
+  id: '/organization/',
+  path: '/organization/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsPathRoute = SettingsPathRouteImport.update({
@@ -86,13 +98,15 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
+  '/dashboard1': typeof Dashboard1Route
   '/login': typeof LoginRoute
   '/organization1': typeof Organization1Route
   '/user': typeof UserRoute
   '/admin/create-user': typeof AdminCreateUserRoute
   '/auth/$path': typeof AuthPathRoute
   '/settings/$path': typeof SettingsPathRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/organization/': typeof OrganizationIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/organization/create': typeof ApiOrganizationCreateRoute
   '/organization/$slug/$path': typeof OrganizationSlugPathRoute
@@ -100,13 +114,15 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
+  '/dashboard1': typeof Dashboard1Route
   '/login': typeof LoginRoute
   '/organization1': typeof Organization1Route
   '/user': typeof UserRoute
   '/admin/create-user': typeof AdminCreateUserRoute
   '/auth/$path': typeof AuthPathRoute
   '/settings/$path': typeof SettingsPathRoute
+  '/dashboard': typeof DashboardIndexRoute
+  '/organization': typeof OrganizationIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/organization/create': typeof ApiOrganizationCreateRoute
   '/organization/$slug/$path': typeof OrganizationSlugPathRoute
@@ -115,13 +131,15 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
+  '/dashboard1': typeof Dashboard1Route
   '/login': typeof LoginRoute
   '/organization1': typeof Organization1Route
   '/user': typeof UserRoute
   '/admin/create-user': typeof AdminCreateUserRoute
   '/auth/$path': typeof AuthPathRoute
   '/settings/$path': typeof SettingsPathRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/organization/': typeof OrganizationIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/organization/create': typeof ApiOrganizationCreateRoute
   '/organization/$slug/$path': typeof OrganizationSlugPathRoute
@@ -131,13 +149,15 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/dashboard'
+    | '/dashboard1'
     | '/login'
     | '/organization1'
     | '/user'
     | '/admin/create-user'
     | '/auth/$path'
     | '/settings/$path'
+    | '/dashboard/'
+    | '/organization/'
     | '/api/auth/$'
     | '/api/organization/create'
     | '/organization/$slug/$path'
@@ -145,13 +165,15 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/dashboard'
+    | '/dashboard1'
     | '/login'
     | '/organization1'
     | '/user'
     | '/admin/create-user'
     | '/auth/$path'
     | '/settings/$path'
+    | '/dashboard'
+    | '/organization'
     | '/api/auth/$'
     | '/api/organization/create'
     | '/organization/$slug/$path'
@@ -159,13 +181,15 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/dashboard'
+    | '/dashboard1'
     | '/login'
     | '/organization1'
     | '/user'
     | '/admin/create-user'
     | '/auth/$path'
     | '/settings/$path'
+    | '/dashboard/'
+    | '/organization/'
     | '/api/auth/$'
     | '/api/organization/create'
     | '/organization/$slug/$path'
@@ -174,13 +198,15 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DashboardRoute: typeof DashboardRoute
+  Dashboard1Route: typeof Dashboard1Route
   LoginRoute: typeof LoginRoute
   Organization1Route: typeof Organization1Route
   UserRoute: typeof UserRoute
   AdminCreateUserRoute: typeof AdminCreateUserRoute
   AuthPathRoute: typeof AuthPathRoute
   SettingsPathRoute: typeof SettingsPathRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  OrganizationIndexRoute: typeof OrganizationIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiOrganizationCreateRoute: typeof ApiOrganizationCreateRoute
   OrganizationSlugPathRoute: typeof OrganizationSlugPathRoute
@@ -210,11 +236,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
+    '/dashboard1': {
+      id: '/dashboard1'
+      path: '/dashboard1'
+      fullPath: '/dashboard1'
+      preLoaderRoute: typeof Dashboard1RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -222,6 +248,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/organization/': {
+      id: '/organization/'
+      path: '/organization'
+      fullPath: '/organization/'
+      preLoaderRoute: typeof OrganizationIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings/$path': {
@@ -278,13 +318,15 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DashboardRoute: DashboardRoute,
+  Dashboard1Route: Dashboard1Route,
   LoginRoute: LoginRoute,
   Organization1Route: Organization1Route,
   UserRoute: UserRoute,
   AdminCreateUserRoute: AdminCreateUserRoute,
   AuthPathRoute: AuthPathRoute,
   SettingsPathRoute: SettingsPathRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+  OrganizationIndexRoute: OrganizationIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiOrganizationCreateRoute: ApiOrganizationCreateRoute,
   OrganizationSlugPathRoute: OrganizationSlugPathRoute,

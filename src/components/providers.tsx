@@ -12,41 +12,44 @@ import { usernamePlugin } from "@/lib/auth/username-plugin";
 import { authClient } from "@/lib/auth-client";
 import { AuthProvider } from "./auth/auth-provider";
 import { Toaster } from "./ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export function Providers({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const { slug } = useParams({ strict: false }) as { slug?: string };
 
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <AuthProvider
-        authClient={authClient}
-        redirectTo="/settings/account"
-        socialProviders={["github"]}
-        navigate={navigate}
-        plugins={[
-          usernamePlugin(),
-          magicLinkPlugin(),
-          passkeyPlugin(),
-          apiKeyPlugin({ organization: true }),
-          themePlugin({ useTheme }),
-          multiSessionPlugin(),
-          deleteUserPlugin(),
-          organizationPlugin({
-            slug: slug ?? null,
-          }),
-        ]}
-        Link={({ href, ...props }) => <Link to={href} {...props} />}
+    <TooltipProvider>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
       >
-        {children}
+        <AuthProvider
+          authClient={authClient}
+          redirectTo="/settings/account"
+          socialProviders={["github"]}
+          navigate={navigate}
+          plugins={[
+            usernamePlugin(),
+            magicLinkPlugin(),
+            passkeyPlugin(),
+            apiKeyPlugin({ organization: true }),
+            themePlugin({ useTheme }),
+            multiSessionPlugin(),
+            deleteUserPlugin(),
+            organizationPlugin({
+              slug: slug ?? null,
+            }),
+          ]}
+          Link={({ href, ...props }) => <Link to={href} {...props} />}
+        >
+          {children}
 
-        <Toaster />
-      </AuthProvider>
-    </ThemeProvider>
+          <Toaster />
+        </AuthProvider>
+      </ThemeProvider>
+    </TooltipProvider>
   );
 }
