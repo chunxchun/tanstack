@@ -1,11 +1,13 @@
+import { ForgotPasswordForm } from "@/components/forms/forgot-password-form";
+import { wadaDisplayName } from "@/lib/constants";
 import { createFileRoute } from "@tanstack/react-router";
 import { GalleryVerticalEnd } from "lucide-react";
-import { wadaDisplayName } from "@/lib/constants";
-import { LoginForm } from "@/components/forms/login-form";
 
-export const Route = createFileRoute("/login")({ component: Login });
+export const Route = createFileRoute("/forgot-password")({
+  component: RouteComponent,
+});
 
-function Login() {
+function RouteComponent() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
@@ -19,7 +21,7 @@ function Login() {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <LoginForm />
+            <ForgotPasswordForm />
           </div>
         </div>
       </div>

@@ -1,11 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { GalleryVerticalEnd } from "lucide-react";
-import { wadaDisplayName } from "@/lib/constants";
-import { LoginForm } from "@/components/forms/login-form";
+import { SignupForm } from "@/components/signup-form";
+import { wadaDisplayName } from "@/lib/utils";
 
-export const Route = createFileRoute("/login")({ component: Login });
+export const Route = createFileRoute("/signup")({
+  component: RouteComponent,
+});
 
-function Login() {
+function RouteComponent() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
@@ -19,7 +21,7 @@ function Login() {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <LoginForm />
+            <SignupForm />
           </div>
         </div>
       </div>
