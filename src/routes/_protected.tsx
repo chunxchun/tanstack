@@ -34,7 +34,9 @@ export const Route = createFileRoute("/_protected")({
       });
     }
 
-    return { session };
+    const user = session.user;
+    const activeSession = session.session;
+    return { user, activeSession };
   },
   component: () => (
     <>

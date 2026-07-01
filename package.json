@@ -40,6 +40,7 @@
 		"@tanstack/react-start": "latest",
 		"@tanstack/react-table": "latest",
 		"@tanstack/router-plugin": "^1.132.0",
+		"@tanstack/zod-adapter": "^1.167.0",
 		"better-auth": "^1.5.3",
 		"better-sqlite3": "^12.6.2",
 		"bowser": "^2.14.1",

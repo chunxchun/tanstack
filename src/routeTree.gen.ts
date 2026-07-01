@@ -28,6 +28,8 @@ import { Route as OrganizationSlugPathRouteImport } from './routes/organization/
 import { Route as ApiOrganizationCreateRouteImport } from './routes/api/organization/create'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ProtectedDashboardSomethingRouteImport } from './routes/_protected/dashboard/something'
+import { Route as ProtectedDashboardMachinesIndexRouteImport } from './routes/_protected/dashboard/machines/index'
+import { Route as ProtectedDashboardLocationsIndexRouteImport } from './routes/_protected/dashboard/locations/index'
 
 const UserRoute = UserRouteImport.update({
   id: '/user',
@@ -125,6 +127,18 @@ const ProtectedDashboardSomethingRoute =
     path: '/something',
     getParentRoute: () => ProtectedDashboardRoute,
   } as any)
+const ProtectedDashboardMachinesIndexRoute =
+  ProtectedDashboardMachinesIndexRouteImport.update({
+    id: '/machines/',
+    path: '/machines/',
+    getParentRoute: () => ProtectedDashboardRoute,
+  } as any)
+const ProtectedDashboardLocationsIndexRoute =
+  ProtectedDashboardLocationsIndexRouteImport.update({
+    id: '/locations/',
+    path: '/locations/',
+    getParentRoute: () => ProtectedDashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -145,6 +159,8 @@ export interface FileRoutesByFullPath {
   '/api/organization/create': typeof ApiOrganizationCreateRoute
   '/organization/$slug/$path': typeof OrganizationSlugPathRoute
   '/organization/$slug/dashboard': typeof OrganizationSlugDashboardRoute
+  '/dashboard/locations/': typeof ProtectedDashboardLocationsIndexRoute
+  '/dashboard/machines/': typeof ProtectedDashboardMachinesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -165,6 +181,8 @@ export interface FileRoutesByTo {
   '/api/organization/create': typeof ApiOrganizationCreateRoute
   '/organization/$slug/$path': typeof OrganizationSlugPathRoute
   '/organization/$slug/dashboard': typeof OrganizationSlugDashboardRoute
+  '/dashboard/locations': typeof ProtectedDashboardLocationsIndexRoute
+  '/dashboard/machines': typeof ProtectedDashboardMachinesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -187,6 +205,8 @@ export interface FileRoutesById {
   '/api/organization/create': typeof ApiOrganizationCreateRoute
   '/organization/$slug/$path': typeof OrganizationSlugPathRoute
   '/organization/$slug/dashboard': typeof OrganizationSlugDashboardRoute
+  '/_protected/dashboard/locations/': typeof ProtectedDashboardLocationsIndexRoute
+  '/_protected/dashboard/machines/': typeof ProtectedDashboardMachinesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -209,6 +229,8 @@ export interface FileRouteTypes {
     | '/api/organization/create'
     | '/organization/$slug/$path'
     | '/organization/$slug/dashboard'
+    | '/dashboard/locations/'
+    | '/dashboard/machines/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -229,6 +251,8 @@ export interface FileRouteTypes {
     | '/api/organization/create'
     | '/organization/$slug/$path'
     | '/organization/$slug/dashboard'
+    | '/dashboard/locations'
+    | '/dashboard/machines'
   id:
     | '__root__'
     | '/'
@@ -250,6 +274,8 @@ export interface FileRouteTypes {
     | '/api/organization/create'
     | '/organization/$slug/$path'
     | '/organization/$slug/dashboard'
+    | '/_protected/dashboard/locations/'
+    | '/_protected/dashboard/machines/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -407,15 +433,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardSomethingRouteImport
       parentRoute: typeof ProtectedDashboardRoute
     }
+    '/_protected/dashboard/machines/': {
+      id: '/_protected/dashboard/machines/'
+      path: '/machines'
+      fullPath: '/dashboard/machines/'
+      preLoaderRoute: typeof ProtectedDashboardMachinesIndexRouteImport
+      parentRoute: typeof ProtectedDashboardRoute
+    }
+    '/_protected/dashboard/locations/': {
+      id: '/_protected/dashboard/locations/'
+      path: '/locations'
+      fullPath: '/dashboard/locations/'
+      preLoaderRoute: typeof ProtectedDashboardLocationsIndexRouteImport
+      parentRoute: typeof ProtectedDashboardRoute
+    }
   }
 }
 
 interface ProtectedDashboardRouteChildren {
   ProtectedDashboardSomethingRoute: typeof ProtectedDashboardSomethingRoute
+  ProtectedDashboardLocationsIndexRoute: typeof ProtectedDashboardLocationsIndexRoute
+  ProtectedDashboardMachinesIndexRoute: typeof ProtectedDashboardMachinesIndexRoute
 }
 
 const ProtectedDashboardRouteChildren: ProtectedDashboardRouteChildren = {
   ProtectedDashboardSomethingRoute: ProtectedDashboardSomethingRoute,
+  ProtectedDashboardLocationsIndexRoute: ProtectedDashboardLocationsIndexRoute,
+  ProtectedDashboardMachinesIndexRoute: ProtectedDashboardMachinesIndexRoute,
 }
 
 const ProtectedDashboardRouteWithChildren =

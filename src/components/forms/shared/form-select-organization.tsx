@@ -1,5 +1,5 @@
-import { type ReactFormExtendedApi } from "@tanstack/react-form";
 import type { SelectOrganizationType } from "@/types/organization.type";
+import { type ReactFormExtendedApi } from "@tanstack/react-form";
 // import type { SelectShopType } from "@/db/schemas/auth-schema";
 import FormSelect from "./form-select";
 
