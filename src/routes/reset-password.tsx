@@ -1,6 +1,6 @@
-import { ResetPasswordForm } from "@/components/reset-password-form";
+import { ResetPasswordForm } from "@/components/forms/reset-password-form";
 import { Button } from "@/components/ui/button";
-import { wadaDisplayName } from "@/lib/utils";
+import { wadaDisplayName } from "@/lib/constants";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { GalleryVerticalEnd } from "lucide-react";
 import { z } from "zod";

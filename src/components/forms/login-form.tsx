@@ -23,23 +23,23 @@ export function LoginForm({
     return typeof firstError === "string" ? firstError : null;
   };
 
-  const resetPassword = async () => {
-    try {
-      const { error } = await authClient.requestPasswordReset({
-        email: "",
-        redirectTo: "/reset-password",
-      });
-      if (error) {
-        console.error("Error requesting password reset:", error);
-        setSubmitError(
-          "Failed to send password reset email. Please try again.",
-        );
-      }
-    } catch (error) {
-      console.error("Error requesting password reset:", error);
-      setSubmitError("Failed to send password reset email. Please try again.");
-    }
-  };
+  // const resetPassword = async () => {
+  //   try {
+  //     const { error } = await authClient.requestPasswordReset({
+  //       email: "",
+  //       redirectTo: "/reset-password",
+  //     });
+  //     if (error) {
+  //       console.error("Error requesting password reset:", error);
+  //       setSubmitError(
+  //         "Failed to send password reset email. Please try again.",
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("Error requesting password reset:", error);
+  //     setSubmitError("Failed to send password reset email. Please try again.");
+  //   }
+  // };
 
   const form = useForm({
     defaultValues: {
@@ -69,7 +69,7 @@ export function LoginForm({
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        externalOnSubmit?.(e);
+        // externalOnSubmit?.(e);
         form.handleSubmit();
       }}
       {...props}

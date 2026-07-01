@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { GalleryVerticalEnd } from "lucide-react";
-import { SignupForm } from "@/components/signup-form";
-import { wadaDisplayName } from "@/lib/utils";
+import { SignupForm } from "@/components/forms/signup-form";
+import { wadaDisplayName } from "@/lib/constants";
 
 export const Route = createFileRoute("/signup")({
   component: RouteComponent,

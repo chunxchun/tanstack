@@ -7,6 +7,8 @@ import { ac, roles as ROLES } from "@/lib/permissions";
 import { resend } from "./email";
 
 export const auth = betterAuth({
+  baseURL: process.env.BETTER_AUTH_URL,
+  trustedOrigins: [process.env.BETTER_AUTH_URL, "http://localhost:3000"],
   database: drizzleAdapter(db, { provider: "sqlite" }),
   emailAndPassword: {
     enabled: true,

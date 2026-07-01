@@ -1,5 +1,6 @@
 import {
   HeadContent,
+  Link,
   Scripts,
   createRootRoute,
   createRootRouteWithContext,
@@ -12,7 +13,8 @@ import type { ReactNode } from "react";
 import { Providers } from "@/components/providers";
 import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
-import{ Header } from "@/components/header";
+import { Header } from "@/components/header";
+import { Button } from "@/components/ui/button";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -38,6 +40,7 @@ export const Route = createRootRouteWithContext<{
     ],
   }),
   shellComponent: RootDocument,
+  notFoundComponent: RootNotFound,
 });
 
 function RootDocument({ children }: { children: ReactNode }) {
@@ -48,10 +51,8 @@ function RootDocument({ children }: { children: ReactNode }) {
       </head>
       <body>
         <Providers>
-          <Header />
           <main>{children}</main>
         </Providers>
-        <Toaster />
         <TanStackDevtools
           config={{
             position: "bottom-right",
@@ -66,5 +67,17 @@ function RootDocument({ children }: { children: ReactNode }) {
         <Scripts />
       </body>
     </html>
+  );
+}
+
+function RootNotFound() {
+  return (
+    <div className="flex h-screen w-screen flex-col items-center justify-center gap-4">
+      <h1 className="text-4xl font-bold">404 - Not Found</h1>
+      <p className="text-lg">The page you are looking for does not exist.</p>
+      <Link to="/">
+        <Button>Go Home</Button>
+      </Link>
+    </div>
   );
 }

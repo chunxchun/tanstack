@@ -27,6 +27,7 @@ import { Route as OrganizationSlugDashboardRouteImport } from './routes/organiza
 import { Route as OrganizationSlugPathRouteImport } from './routes/organization/$slug/$path'
 import { Route as ApiOrganizationCreateRouteImport } from './routes/api/organization/create'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as ProtectedDashboardSomethingRouteImport } from './routes/_protected/dashboard/something'
 
 const UserRoute = UserRouteImport.update({
   id: '/user',
@@ -118,6 +119,12 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProtectedDashboardSomethingRoute =
+  ProtectedDashboardSomethingRouteImport.update({
+    id: '/something',
+    path: '/something',
+    getParentRoute: () => ProtectedDashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -128,11 +135,12 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/user': typeof UserRoute
-  '/dashboard': typeof ProtectedDashboardRoute
+  '/dashboard': typeof ProtectedDashboardRouteWithChildren
   '/admin/create-user': typeof AdminCreateUserRoute
   '/auth/$path': typeof AuthPathRoute
   '/settings/$path': typeof SettingsPathRoute
   '/organization/': typeof OrganizationIndexRoute
+  '/dashboard/something': typeof ProtectedDashboardSomethingRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/organization/create': typeof ApiOrganizationCreateRoute
   '/organization/$slug/$path': typeof OrganizationSlugPathRoute
@@ -147,11 +155,12 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/user': typeof UserRoute
-  '/dashboard': typeof ProtectedDashboardRoute
+  '/dashboard': typeof ProtectedDashboardRouteWithChildren
   '/admin/create-user': typeof AdminCreateUserRoute
   '/auth/$path': typeof AuthPathRoute
   '/settings/$path': typeof SettingsPathRoute
   '/organization': typeof OrganizationIndexRoute
+  '/dashboard/something': typeof ProtectedDashboardSomethingRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/organization/create': typeof ApiOrganizationCreateRoute
   '/organization/$slug/$path': typeof OrganizationSlugPathRoute
@@ -168,11 +177,12 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/user': typeof UserRoute
-  '/_protected/dashboard': typeof ProtectedDashboardRoute
+  '/_protected/dashboard': typeof ProtectedDashboardRouteWithChildren
   '/admin/create-user': typeof AdminCreateUserRoute
   '/auth/$path': typeof AuthPathRoute
   '/settings/$path': typeof SettingsPathRoute
   '/organization/': typeof OrganizationIndexRoute
+  '/_protected/dashboard/something': typeof ProtectedDashboardSomethingRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/organization/create': typeof ApiOrganizationCreateRoute
   '/organization/$slug/$path': typeof OrganizationSlugPathRoute
@@ -194,6 +204,7 @@ export interface FileRouteTypes {
     | '/auth/$path'
     | '/settings/$path'
     | '/organization/'
+    | '/dashboard/something'
     | '/api/auth/$'
     | '/api/organization/create'
     | '/organization/$slug/$path'
@@ -213,6 +224,7 @@ export interface FileRouteTypes {
     | '/auth/$path'
     | '/settings/$path'
     | '/organization'
+    | '/dashboard/something'
     | '/api/auth/$'
     | '/api/organization/create'
     | '/organization/$slug/$path'
@@ -233,6 +245,7 @@ export interface FileRouteTypes {
     | '/auth/$path'
     | '/settings/$path'
     | '/organization/'
+    | '/_protected/dashboard/something'
     | '/api/auth/$'
     | '/api/organization/create'
     | '/organization/$slug/$path'
@@ -387,15 +400,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_protected/dashboard/something': {
+      id: '/_protected/dashboard/something'
+      path: '/something'
+      fullPath: '/dashboard/something'
+      preLoaderRoute: typeof ProtectedDashboardSomethingRouteImport
+      parentRoute: typeof ProtectedDashboardRoute
+    }
   }
 }
 
+interface ProtectedDashboardRouteChildren {
+  ProtectedDashboardSomethingRoute: typeof ProtectedDashboardSomethingRoute
+}
+
+const ProtectedDashboardRouteChildren: ProtectedDashboardRouteChildren = {
+  ProtectedDashboardSomethingRoute: ProtectedDashboardSomethingRoute,
+}
+
+const ProtectedDashboardRouteWithChildren =
+  ProtectedDashboardRoute._addFileChildren(ProtectedDashboardRouteChildren)
+
 interface ProtectedRouteChildren {
-  ProtectedDashboardRoute: typeof ProtectedDashboardRoute
+  ProtectedDashboardRoute: typeof ProtectedDashboardRouteWithChildren
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
-  ProtectedDashboardRoute: ProtectedDashboardRoute,
+  ProtectedDashboardRoute: ProtectedDashboardRouteWithChildren,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
