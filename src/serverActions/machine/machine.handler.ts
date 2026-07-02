@@ -5,11 +5,11 @@ import type {
   UpdateMachineType,
 } from "@/types/machine.type";
 import { eq } from "drizzle-orm";
+
 export const listMachineHandler = async (
   limit: number = 10,
   offset: number = 1,
   organizationId?: string,
-  // shopId?: number,
 ) => {
   try {
     const result = await db

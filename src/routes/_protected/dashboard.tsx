@@ -1,62 +1,103 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { AppSidebar } from "@/components/app-sidebar";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { ShopProvider } from "@/context/shop.provider";
+import type { SelectShopType } from "@/db/schema";
+import type { SelectUserType } from "@/db/schema/authSchema";
+import { getVersionedImageUrl } from "@/lib/utils";
+import { listShopFn } from "@/utils/shop/shop.function";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+
+const ACTIVE_SHOP_STORAGE_KEY = "active-shop-id";
 
 export const Route = createFileRoute("/_protected/dashboard")({
-  component: Dashboard,
+  loader: async () => {
+    const shops = await listShopFn({ data: { limit: 100, offset: 0 } });
+    return { shops };
+  },
+  component: RouteComponent,
 });
 
-function Dashboard() {
+function RouteComponent() {
+  const { shops } = Route.useLoaderData();
+  const { user } = Route.useRouteContext();
+  const [activeShop, setActiveShop] = useState<SelectShopType>(() => {
+    if (typeof window === "undefined") {
+      return shops[0];
+    }
+
+    const storedShopId = window.localStorage.getItem(ACTIVE_SHOP_STORAGE_KEY);
+    if (!storedShopId) {
+      return shops[0];
+    }
+
+    const matchedShop = shops.find((shop) => shop.id === Number(storedShopId));
+    return matchedShop ?? shops[0];
+  });
+
+  useEffect(() => {
+    if (!activeShop) {
+      return;
+    }
+
+    window.localStorage.setItem(
+      ACTIVE_SHOP_STORAGE_KEY,
+      String(activeShop.id),
+    );
+  }, [activeShop]);
+
+  useEffect(() => {
+    if (!shops.length) {
+      return;
+    }
+
+    const matchedShop = shops.find((shop) => shop.id === activeShop?.id);
+    if (matchedShop) {
+      if (matchedShop !== activeShop) {
+        setActiveShop(matchedShop);
+      }
+      return;
+    }
+
+    setActiveShop(shops[0]);
+  }, [activeShop, shops]);
+
   return (
-    <>
+    <TooltipProvider>
       <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2">
-            <div className="flex items-center gap-2 px-4">
-              <SidebarTrigger className="-ml-1" />
-              <Separator
-                orientation="vertical"
-                className="mr-2 data-[orientation=vertical]:h-4"
-              />
-              <Breadcrumb>
-                <BreadcrumbList>
-                  <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="#">
-                      Build Your Application
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator className="hidden md:block" />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
-            </div>
-          </header>
-          <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-            <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-              <div className="aspect-video rounded-xl bg-muted/50" />
-              <div className="aspect-video rounded-xl bg-muted/50" />
-              <div className="aspect-video rounded-xl bg-muted/50" />
-            </div>
-            <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-          </div>
-        </SidebarInset>
+        
+        <ShopProvider initialValue={activeShop}>
+          <AppSidebar
+            shops={shops}
+            user={user as SelectUserType}
+            activeShop={activeShop}
+            setActiveShop={setActiveShop}
+          />
+          <SidebarInset>
+            <header className="w-full shrink-0 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+              {activeShop ? (
+                activeShop.bannerUrl ? (
+                  <img
+                    src={getVersionedImageUrl(
+                      activeShop.bannerUrl,
+                      activeShop.updatedAt,
+                    )}
+                    alt={activeShop.name}
+                    className="block h-32 w-full object-cover"
+                  />
+                ) : (
+                  <p className="px-4 py-6 text-lg font-semibold">{activeShop.name}</p>
+                )
+              ) : null}
+            </header>
+            <Outlet />
+          </SidebarInset>
+        </ShopProvider>
       </SidebarProvider>
-    </>
+    </TooltipProvider>
   );
 }
