@@ -1,7 +1,5 @@
 import { db } from "@/db";
-import {
-  machineOperatingHourTables,
-} from "@/db/schemas/machine.operating-hour.db.schema";
+import { machineOperatingHourTables } from "@/db/schemas/machine.operating-hour.db.schema";
 import type {
   InsertMachineOperatingHourType,
   UpdateMachineOperatingHourType,
@@ -26,7 +24,11 @@ export const listMachineOperatingHourHandler = async (
     return result;
   } catch (error) {
     console.error("Error listing machine operating schedules:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "Unknown error while listing machine operating schedules",
+    );
   }
 };
 
@@ -45,7 +47,11 @@ export const fetchMachineOperatingHourByIdHandler = async (id: number) => {
     return result;
   } catch (error) {
     console.error("Error fetching machine operating schedule by id:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "Unknown error while fetching machine operating schedule by id",
+    );
   }
 };
 
@@ -70,7 +76,11 @@ export const fetchMachineOperatingHourByMachineIdHandler = async (
       "Error fetching machine operating schedules by machine id:",
       error,
     );
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "Unknown error while fetching machine operating schedules by machine id",
+    );
   }
 };
 
@@ -90,7 +100,11 @@ export const createMachineOperatingHourHandler = async (
     return result;
   } catch (error) {
     console.error("Error creating machine operating schedule:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "Unknown error while creating machine operating schedule",
+    );
   }
 };
 
@@ -112,7 +126,11 @@ export const updateMachineOperatingHourByIdHandler = async (
     return result;
   } catch (error) {
     console.error("Error updating machine operating schedule:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "Unknown error while updating machine operating schedule",
+    );
   }
 };
 
@@ -130,6 +148,10 @@ export const deleteMachineOperatingHourByIdHandler = async (id: number) => {
     return result;
   } catch (error) {
     console.error("Error deleting machine operating schedule:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "Unknown error while deleting machine operating schedule",
+    );
   }
 };

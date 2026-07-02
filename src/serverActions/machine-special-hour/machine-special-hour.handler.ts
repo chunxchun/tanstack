@@ -1,19 +1,19 @@
 import { db } from "@/db";
-import {
-  machineSpecialScheduleTable,
-  type InsertMachineSpecialScheduleType,
-  type UpdateMachineSpecialScheduleType,
-} from "@/db/schema";
+import { machineSpecialHoursTable } from "@/db/schemas/machine.special-hour.db.schema";
+import type {
+  InsertMachineSpecialHourType,
+  UpdateMachineSpecialHourType,
+} from "@/types/machine.special-hour.type";
 import { eq } from "drizzle-orm";
 
-export const listMachineSpecialScheduleHandler = async (
+export const listMachineSpecialHourHandler = async (
   limit: number = 10,
   offset: number = 1,
 ) => {
   try {
     const result = await db
       .select()
-      .from(machineSpecialScheduleTable)
+      .from(machineSpecialHoursTable)
       .limit(limit)
       .offset(offset);
 
@@ -24,16 +24,20 @@ export const listMachineSpecialScheduleHandler = async (
     return result;
   } catch (error) {
     console.error("Error listing machine special schedules:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "Unknown error while listing machine special schedules",
+    );
   }
 };
 
-export const fetchMachineSpecialScheduleByIdHandler = async (id: number) => {
+export const fetchMachineSpecialHourByIdHandler = async (id: number) => {
   try {
     const result = await db
       .select()
-      .from(machineSpecialScheduleTable)
-      .where(eq(machineSpecialScheduleTable.id, id))
+      .from(machineSpecialHoursTable)
+      .where(eq(machineSpecialHoursTable.id, id))
       .limit(1);
 
     if (!result || result.length === 0) {
@@ -43,18 +47,22 @@ export const fetchMachineSpecialScheduleByIdHandler = async (id: number) => {
     return result;
   } catch (error) {
     console.error("Error fetching machine special schedule by id:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "Unknown error while fetching machine special schedule by id",
+    );
   }
 };
 
-export const fetchMachineSpecialScheduleByMachineIdHandler = async (
+export const fetchMachineSpecialHourByMachineIdHandler = async (
   machineId: number,
 ) => {
   try {
     const result = await db
       .select()
-      .from(machineSpecialScheduleTable)
-      .where(eq(machineSpecialScheduleTable.machineId, machineId));
+      .from(machineSpecialHoursTable)
+      .where(eq(machineSpecialHoursTable.machineId, machineId));
 
     if (!result || result.length === 0) {
       throw new Error(
@@ -68,57 +76,69 @@ export const fetchMachineSpecialScheduleByMachineIdHandler = async (
       "Error fetching machine special schedules by machine id:",
       error,
     );
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "Unknown error while fetching machine special schedules by machine id",
+    );
   }
 };
 
-export const createMachineSpecialScheduleHandler = async (
-  machineSpecialSchedule: InsertMachineSpecialScheduleType,
+export const createMachineSpecialHourHandler = async (
+  machineSpecialHour: InsertMachineSpecialHourType,
 ) => {
   try {
     const result = await db
-      .insert(machineSpecialScheduleTable)
-      .values(machineSpecialSchedule)
+      .insert(machineSpecialHoursTable)
+      .values(machineSpecialHour)
       .returning();
 
     if (!result || result.length === 0) {
-      throw new Error("Failed to create machine special schedule");
+      throw new Error("Failed to create machine special hour");
     }
 
     return result;
   } catch (error) {
-    console.error("Error creating machine special schedule:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    console.error("Error creating machine special hour:", error);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "Unknown error while creating machine special hour",
+    );
   }
 };
 
-export const updateMachineSpecialScheduleByIdHandler = async (
+export const updateMachineSpecialHourByIdHandler = async (
   id: number,
-  machineSpecialSchedule: UpdateMachineSpecialScheduleType,
+  machineSpecialHour: UpdateMachineSpecialHourType,
 ) => {
   try {
     const result = await db
-      .update(machineSpecialScheduleTable)
-      .set(machineSpecialSchedule)
-      .where(eq(machineSpecialScheduleTable.id, id))
+      .update(machineSpecialHoursTable)
+      .set(machineSpecialHour)
+      .where(eq(machineSpecialHoursTable.id, id))
       .returning();
 
     if (!result || result.length === 0) {
-      throw new Error("Failed to update machine special schedule");
+      throw new Error("Failed to update machine special hour");
     }
 
     return result;
   } catch (error) {
     console.error("Error updating machine special schedule:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "Unknown error while updating machine special schedule",
+    );
   }
 };
 
-export const deleteMachineSpecialScheduleByIdHandler = async (id: number) => {
+export const deleteMachineSpecialHourByIdHandler = async (id: number) => {
   try {
     const result = await db
-      .delete(machineSpecialScheduleTable)
-      .where(eq(machineSpecialScheduleTable.id, id))
+      .delete(machineSpecialHoursTable)
+      .where(eq(machineSpecialHoursTable.id, id))
       .returning();
 
     if (!result || result.length === 0) {
@@ -128,6 +148,10 @@ export const deleteMachineSpecialScheduleByIdHandler = async (id: number) => {
     return result;
   } catch (error) {
     console.error("Error deleting machine special schedule:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "Unknown error while deleting machine special schedule",
+    );
   }
 };

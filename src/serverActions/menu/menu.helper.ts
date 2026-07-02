@@ -1,17 +1,17 @@
-import {
-  type InsertMenuWithFoodItemsType,
-  type MenuFoodItemType,
-  type SelectMenuType,
-  type SelectMenuWithFoodItemsType,
-  type UpdateMenuType,
-  type UpdateMenuWithFoodItemsType,
-} from "@/db/schema";
+import type{
+  InsertMenuWithFoodItemsType,
+  MenuFoodItemType,
+  SelectMenuType,
+  SelectMenuWithFoodItemsType,
+  UpdateMenuType,
+  UpdateMenuWithFoodItemsType,
+} from "@/types/menu.type";
 import {
   createMenuFoodItemFn,
   deleteMenuFoodItemByIdFn,
   fetchMenuFoodItemByMenuIdFn,
 } from "../menuFoodItem/menuFoodItem.function";
-import { getImageUrl } from "../shared.helper";
+import { getImageUrl } from "@/lib/shared.helper";
 import { createMenuFn, updateMenuByIdFn } from "./menu.function";
 
 export const splitMenuWithFoodItemsData = (
@@ -30,7 +30,10 @@ export const handleMenuWithFoodItemSubmit = async (
 ) => {
   const { menu, menuFoodItems } = splitMenuWithFoodItemsData(data);
 
-  const parsedMenu = { ...menu, shopId: Number(menu.shopId) } as SelectMenuType;
+  const parsedMenu = {
+    ...menu,
+    organizationId: String(menu.organizationId),
+  } as SelectMenuType;
   const createMenuResult = await createMenuFn({ data: parsedMenu });
 
   if (!createMenuResult) {
@@ -55,7 +58,7 @@ export type queryMenuWithFoodItemType = {
   menuName: string;
   menusCoverPhotoUrl?: string | null;
   menuDate: string;
-  menuShopId: number;
+  menuOrganizationId: string;
   menuDescription?: string | null;
   foodItemId: number;
   foodItemName: string;
@@ -70,7 +73,7 @@ export const destructMenuWithFoodItem = (
     name: menuWithFoodItem.menuName,
     coverPhotoUrl: menuWithFoodItem.menusCoverPhotoUrl ?? undefined,
     date: menuWithFoodItem.menuDate,
-    shopId: menuWithFoodItem.menuShopId,
+    organizationId: menuWithFoodItem.menuOrganizationId,
     description: menuWithFoodItem.menuDescription ?? undefined,
   };
 
@@ -102,11 +105,11 @@ export const constructMenuWithFoodItem = (
 const getMenuImageUrl = async (
   image: File,
   menuId: string | number,
-  shopId: string | number | null = null,
+  organizationId: string | number | null = null,
 ) => {
   if (!image) return null;
-  const folder = shopId
-    ? `shops/${String(shopId)}/menus/${String(menuId)}`
+  const folder = organizationId
+    ? `organizations/${String(organizationId)}/menus/${String(menuId)}`
     : `menus/${String(menuId)}`;
   return getImageUrl(folder, "image", image);
 };
@@ -114,13 +117,13 @@ const getMenuImageUrl = async (
 export const menuHandleCreateSubmit = async (
   values: InsertMenuWithFoodItemsType,
   image: File | null = null,
-  shopId: string | number | null = null,
+  organizationId: string | number | null = null,
 ) => {
   try {
     const { menuFoodItems, ...menuWithoutFoodItems } = values;
     const parsedValues = {
       ...menuWithoutFoodItems,
-      shopId: Number(menuWithoutFoodItems.shopId),
+      organizationId: String(menuWithoutFoodItems.organizationId),
     };
 
     const result = await createMenuFn({ data: parsedValues });
@@ -140,7 +143,7 @@ export const menuHandleCreateSubmit = async (
     let imageUrl: string | null = null;
 
     if (image) {
-      imageUrl = await getMenuImageUrl(image, String(menuId), shopId);
+      imageUrl = await getMenuImageUrl(image, String(menuId), organizationId);
     }
 
     const updatedValues: UpdateMenuType = {
@@ -160,7 +163,7 @@ export const menuHandleCreateSubmit = async (
 export const menuHandleUpdateSubmit = async (
   values: UpdateMenuWithFoodItemsType,
   image: File | null = null,
-  shopId: string | number | null = null,
+  organizationId: string | number | null = null,
 ) => {
   try {
     // update image
@@ -168,7 +171,7 @@ export const menuHandleUpdateSubmit = async (
       values.coverPhotoUrl = await getMenuImageUrl(
         image,
         String(values.id),
-        shopId,
+        organizationId,
       );
     }
 

@@ -1,9 +1,9 @@
 import { db } from "@/db";
-import {
-  operatingHoursTable,
-  type InsertOperatingHourType,
-  type UpdateOperatingHourType,
-} from "@/db/schema";
+import { operatingHoursTable } from "@/db/schemas/operating-hour.db.schema";
+import type {
+  InsertOperatingHourType,
+  UpdateOperatingHourType,
+} from "@/types/operating-hour.type";
 import { eq } from "drizzle-orm";
 
 export const listOperatingHourHandler = async (

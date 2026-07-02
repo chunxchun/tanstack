@@ -6,41 +6,48 @@ import {
   listMenuFoodItemHandler,
   updateMenuFoodItemByIdHandler,
 } from "./menuFoodItem.handler";
-import { idSchema, paginationSchema } from "../sharedSchema";
+import { idZodSchema, paginationZodSchema } from "@/zod/shared.zod.schema";
 import { createServerFn } from "@tanstack/react-start";
+import { zodValidator } from "@tanstack/zod-adapter";
 import {
-  insertMenuFoodItemSchema,
-  updateMenuFoodItemSchema,
-} from "@/db/schema";
+  insertMenuFoodItemZodSchema,
+  updateMenuFoodItemZodSchema,
+} from "@/zod/menu.food-item.zod.schema";
+import type {
+  InsertMenuFoodItemType,
+  UpdateMenuFoodItemType,
+} from "@/types/menu.food-item.type";
 
 export const listMenuFoodItemFn = createServerFn({ method: "GET" })
-  .inputValidator(paginationSchema)
+  .validator(zodValidator(paginationZodSchema))
   .handler(async ({ data }) =>
     listMenuFoodItemHandler(data.limit, data.offset),
   );
 
 export const createMenuFoodItemFn = createServerFn({ method: "POST" })
-  .inputValidator(insertMenuFoodItemSchema)
-  .handler(async ({ data }) => createMenuFoodItemHandler(data));
+  .validator(zodValidator(insertMenuFoodItemZodSchema))
+  .handler(async ({ data }) =>
+    createMenuFoodItemHandler(data as InsertMenuFoodItemType),
+  );
 
 export const fetchMenuFoodItemByIdFn = createServerFn({ method: "GET" })
-  .inputValidator(idSchema)
+  .validator(zodValidator(idZodSchema))
   .handler(async ({ data }) => fetchMenuFoodItemByIdHandler(Number(data.id)));
 
 export const fetchMenuFoodItemByMenuIdFn = createServerFn({ method: "GET" })
-  .inputValidator(idSchema)
+  .validator(zodValidator(idZodSchema))
   .handler(async ({ data }) =>
     fetchMenuFoodItemByMenuIdHandler(Number(data.id)),
   );
 
 export const updateMenuFoodItemByIdFn = createServerFn({ method: "POST" })
-  .inputValidator(updateMenuFoodItemSchema)
+  .validator(zodValidator(updateMenuFoodItemZodSchema))
   .handler(async ({ data }) =>
-    updateMenuFoodItemByIdHandler(Number(data.id), data),
+    updateMenuFoodItemByIdHandler(Number(data.id), data as UpdateMenuFoodItemType),
   );
 
 export const deleteMenuFoodItemByIdFn = createServerFn({ method: "GET" })
-  .inputValidator(idSchema)
+  .validator(zodValidator(idZodSchema))
   .handler(async ({ data }) =>
     deleteMenuFoodItemByIdHandler(Number(data.id)),
   );

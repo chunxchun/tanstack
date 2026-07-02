@@ -1,56 +1,61 @@
+import type { UpdateMachineSpecialHourType } from "@/types/machine.special-hour.type";
 import {
-  insertMachineSpecialScheduleSchema,
-  updateMachineSpecialScheduleSchema,
-} from "@/db/schema";
+  insertMachineSpecialHourZodSchema,
+  updateMachineSpecialHourZodSchema,
+} from "@/zod/machine.special-hour.zod.schema";
+import { idZodSchema, paginationZodSchema } from "@/zod/shared.zod.schema";
 import { createServerFn } from "@tanstack/react-start";
-import { idSchema, paginationSchema } from "../sharedSchema";
+import { zodValidator } from "@tanstack/zod-adapter";
 import {
-  createMachineSpecialScheduleHandler,
-  deleteMachineSpecialScheduleByIdHandler,
-  fetchMachineSpecialScheduleByIdHandler,
-  fetchMachineSpecialScheduleByMachineIdHandler,
-  listMachineSpecialScheduleHandler,
-  updateMachineSpecialScheduleByIdHandler,
+  createMachineSpecialHourHandler,
+  deleteMachineSpecialHourByIdHandler,
+  fetchMachineSpecialHourByIdHandler,
+  fetchMachineSpecialHourByMachineIdHandler,
+  listMachineSpecialHourHandler,
+  updateMachineSpecialHourByIdHandler,
 } from "./machine-special-hour.handler";
 
-export const listMachineSpecialScheduleFn = createServerFn({ method: "GET" })
-  .inputValidator(paginationSchema)
+export const listMachineSpecialHoursFn = createServerFn({ method: "GET" })
+  .validator(zodValidator(paginationZodSchema))
   .handler(async ({ data }) =>
-    listMachineSpecialScheduleHandler(data.limit, data.offset),
+    listMachineSpecialHourHandler(data.limit, data.offset),
   );
 
-export const createMachineSpecialScheduleFn = createServerFn({ method: "POST" })
-  .inputValidator(insertMachineSpecialScheduleSchema)
-  .handler(async ({ data }) => createMachineSpecialScheduleHandler(data));
+export const createMachineSpecialHoursFn = createServerFn({ method: "POST" })
+  .validator(zodValidator(insertMachineSpecialHourZodSchema))
+  .handler(async ({ data }) => createMachineSpecialHourHandler(data));
 
-export const fetchMachineSpecialScheduleByIdFn = createServerFn({
+export const fetchMachineSpecialHoursByIdFn = createServerFn({
   method: "GET",
 })
-  .inputValidator(idSchema)
+  .validator(zodValidator(idZodSchema))
   .handler(async ({ data }) =>
-    fetchMachineSpecialScheduleByIdHandler(Number(data.id)),
+    fetchMachineSpecialHourByIdHandler(Number(data.id)),
   );
 
-export const fetchMachineSpecialScheduleByMachineIdFn = createServerFn({
+export const fetchMachineSpecialHoursByMachineIdFn = createServerFn({
   method: "GET",
 })
-  .inputValidator(idSchema)
+  .validator(zodValidator(idZodSchema))
   .handler(async ({ data }) =>
-    fetchMachineSpecialScheduleByMachineIdHandler(Number(data.id)),
+    fetchMachineSpecialHourByMachineIdHandler(Number(data.id)),
   );
 
-export const updateMachineSpecialScheduleByIdFn = createServerFn({
+export const updateMachineSpecialHoursByIdFn = createServerFn({
   method: "POST",
 })
-  .inputValidator(updateMachineSpecialScheduleSchema)
+  .validator(zodValidator(updateMachineSpecialHourZodSchema))
   .handler(async ({ data }) =>
-    updateMachineSpecialScheduleByIdHandler(Number(data.id), data),
+    updateMachineSpecialHourByIdHandler(
+      Number(data.id),
+      data as UpdateMachineSpecialHourType,
+    ),
   );
 
-export const deleteMachineSpecialScheduleByIdFn = createServerFn({
+export const deleteMachineSpecialHoursByIdFn = createServerFn({
   method: "GET",
 })
-  .inputValidator(idSchema)
+  .validator(zodValidator(idZodSchema))
   .handler(async ({ data }) =>
-    deleteMachineSpecialScheduleByIdHandler(Number(data.id)),
+    deleteMachineSpecialHourByIdHandler(Number(data.id)),
   );

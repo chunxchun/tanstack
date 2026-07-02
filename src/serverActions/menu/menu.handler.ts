@@ -1,36 +1,39 @@
 import { db } from "@/db";
-import {
-  foodItemsTable,
-  menusFoodItemsTable,
-  menusTable,
-  type InsertMenuType,
-  type UpdateMenuType,
-} from "@/db/schema";
+import { foodItemsTable } from "@/db/schemas/food-item.db.schema";
+import { menusFoodItemsTable } from "@/db/schemas/menu.food-item.db.schema";
+import { menusTable } from "@/db/schemas/menu.db.schema";
+import type { InsertMenuType, UpdateMenuType } from "@/types/menu.type";
 import { desc, eq } from "drizzle-orm";
 
 export const listMenuHandler = async (
   limit: number = 10,
   offset: number = 1,
-  shopId?: number,
+  organizationId?: string,
 ) => {
   try {
     const result = await db
       .select()
       .from(menusTable)
-      .where(shopId ? eq(menusTable.shopId, shopId) : undefined)
+      .where(
+        organizationId
+          ? eq(menusTable.organizationId, organizationId)
+          : undefined,
+      )
       .limit(limit)
       .offset(offset);
     return result;
   } catch (error) {
     console.error("Error listing menus:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error ? error.message : "Unknown error while listing menus",
+    );
   }
 };
 
 export const listMenuWithFoodItemHandler = async (
   limit: number = 10,
   offset: number = 1,
-  shopId?: number,
+  organizationId?: string,
 ) => {
   try {
     // const result = await db
@@ -39,7 +42,7 @@ export const listMenuWithFoodItemHandler = async (
     //     menuName: menusTable.name,
     //     menusCoverPhotoUrl: menusTable.coverPhotoUrl,
     //     menuDate: menusTable.date,
-    //     menuShopId: menusTable.shopId,
+    //     menuOrganizationId: menusTable.organizationId,
     //     menuDescription: menusTable.description,
     //     foodItemId: foodItemsTable.id,
     //     foodItemName: foodItemsTable.name,
@@ -62,9 +65,14 @@ export const listMenuWithFoodItemHandler = async (
       db
         .select()
         .from(menusTable)
-        .where(shopId ? eq(menusTable.shopId, shopId) : undefined)
+        .where(
+          organizationId
+            ? eq(menusTable.organizationId, organizationId)
+            : undefined,
+        )
         .orderBy(desc(menusTable.createdAt))
-        .limit(10),
+        .limit(limit)
+        .offset(offset),
     );
 
     const result = await db
@@ -74,7 +82,7 @@ export const listMenuWithFoodItemHandler = async (
         menuName: menus.name,
         menusCoverPhotoUrl: menus.coverPhotoUrl,
         menuDate: menus.date,
-        menuShopId: menus.shopId,
+        menuOrganizationId: menus.organizationId,
         menuDescription: menus.description,
         foodItemId: foodItemsTable.id,
         foodItemName: foodItemsTable.name,
@@ -90,7 +98,11 @@ export const listMenuWithFoodItemHandler = async (
     return result;
   } catch (error) {
     console.error("Error listing menus with food items:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "Unknown error while listing menus with food items",
+    );
   }
 };
 
@@ -104,7 +116,11 @@ export const fetchMenuByIdHandler = async (id: number) => {
     return result[0] ?? null;
   } catch (error) {
     console.error("Error fetching menu by id:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "Unknown error while fetching menu by id",
+    );
   }
 };
 
@@ -114,7 +130,9 @@ export const createMenuHandler = async (menu: InsertMenuType) => {
     return result;
   } catch (error) {
     console.error("Error creating menu:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error ? error.message : "Unknown error while creating menu",
+    );
   }
 };
 
@@ -131,7 +149,9 @@ export const updateMenuHandlerById = async (
     return result;
   } catch (error) {
     console.error("Error updating menu:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error ? error.message : "Unknown error while updating menu",
+    );
   }
 };
 
@@ -144,6 +164,8 @@ export const deleteMenuByIdHandler = async (id: number) => {
     return result;
   } catch (error) {
     console.error("Error deleting menu:", error);
-    throw new Error(error instanceof Error ? error.message : "Unknown error");
+    throw new Error(
+      error instanceof Error ? error.message : "Unknown error while deleting menu",
+    );
   }
 };

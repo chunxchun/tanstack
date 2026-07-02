@@ -1,55 +1,64 @@
-import { insertSaleSchema, updateSaleSchema } from "@/db/schema/saleTable";
+import {
+  insertSaleZodSchema,
+  updateSaleZodSchema,
+} from "@/zod/sale.zod.schema";
+import type { InsertSaleType, UpdateSaleType } from "@/types/sale.type";
 import { createServerFn } from "@tanstack/react-start";
+import { zodValidator } from "@tanstack/zod-adapter";
 import {
   dateMachineIdSchema,
   dateRangeMachineIdSchema,
-  dateRangeShopIdSchema,
+  dateRangeOrganizationIdSchema,
   dateShopIdSchema,
-  idSchema,
-  paginationSchema,
-} from "../sharedSchema";
+  idZodSchema,
+  paginationZodSchema,
+} from "@/zod/shared.zod.schema";
 import {
   createSaleHandler,
-  deleteSaleByIdHandler,
+  deleteSaleHandler,
   fetchSaleByIdHandler,
   listSaleByDateByMachineIdHandler,
-  listSaleByDateByShopIdHandler,
+  listSaleByDateByOrganizationIdHandler,
   listSaleByDateRangeByMachineIdHandler,
-  listSaleByDateRangeByShopIdHandler,
+  listSaleByDateRangeByOrganizationIdHandler,
   listSaleHandler,
-  updateSaleHandlerById,
+  updateSaleHandler,
 } from "./sale.handler";
 
 export const listSaleFn = createServerFn({ method: "GET" })
-  .inputValidator(paginationSchema)
+  .validator(zodValidator(paginationZodSchema))
   .handler(async ({ data }) =>
-    listSaleHandler(data.limit, data.offset, data.shopId),
+    listSaleHandler(data.limit, data.offset, data.organizationId),
   );
-export const listSaleByDateByShopIdFn = createServerFn({ method: "GET" })
-  .inputValidator(dateShopIdSchema)
+export const listSaleByDateByOrganizationIdFn = createServerFn({
+  method: "GET",
+})
+  .validator(zodValidator(dateShopIdSchema))
   .handler(async ({ data }) =>
-    listSaleByDateByShopIdHandler(data.date, data.shopId),
+    listSaleByDateByOrganizationIdHandler(data.date, data.organizationId),
   );
 
 export const listSaleByDateByMachineIdFn = createServerFn({ method: "GET" })
-  .inputValidator(dateMachineIdSchema)
+  .validator(zodValidator(dateMachineIdSchema))
   .handler(async ({ data }) =>
     listSaleByDateByMachineIdHandler(data.date, data.machineId),
   );
 
-export const listSaleByDateRangeByShopIdFn = createServerFn({ method: "GET" })
-  .inputValidator(dateRangeShopIdSchema)
+export const listSaleByDateRangeByOrganizationIdFn = createServerFn({
+  method: "GET",
+})
+  .validator(zodValidator(dateRangeOrganizationIdSchema))
   .handler(async ({ data }) =>
-    listSaleByDateRangeByShopIdHandler(
+    listSaleByDateRangeByOrganizationIdHandler(
       data.startDate,
       data.endDate,
-      data.shopId,
+      data.organizationId,
     ),
   );
 export const listSaleByDateRangeByMachineIdFn = createServerFn({
   method: "GET",
 })
-  .inputValidator(dateRangeMachineIdSchema)
+  .validator(zodValidator(dateRangeMachineIdSchema))
   .handler(async ({ data }) =>
     listSaleByDateRangeByMachineIdHandler(
       data.startDate,
@@ -58,17 +67,19 @@ export const listSaleByDateRangeByMachineIdFn = createServerFn({
     ),
   );
 export const createSaleFn = createServerFn({ method: "POST" })
-  .inputValidator(insertSaleSchema)
-  .handler(async ({ data }) => createSaleHandler(data));
+  .validator(zodValidator(insertSaleZodSchema))
+  .handler(async ({ data }) => createSaleHandler(data as InsertSaleType));
 
 export const fetchSaleByIdFn = createServerFn({ method: "GET" })
-  .inputValidator(idSchema)
+  .validator(zodValidator(idZodSchema))
   .handler(async ({ data }) => fetchSaleByIdHandler(Number(data.id)));
 
 export const updateSaleByIdFn = createServerFn({ method: "POST" })
-  .inputValidator(updateSaleSchema)
-  .handler(async ({ data }) => updateSaleHandlerById(Number(data.id), data));
+  .validator(zodValidator(updateSaleZodSchema))
+  .handler(async ({ data }) =>
+    updateSaleHandler(Number(data.id), data as UpdateSaleType),
+  );
 
 export const deleteSaleByIdFn = createServerFn({ method: "GET" })
-  .inputValidator(idSchema)
-  .handler(async ({ data }) => deleteSaleByIdHandler(Number(data.id)));
+  .validator(zodValidator(idZodSchema))
+  .handler(async ({ data }) => deleteSaleHandler(Number(data.id)));
