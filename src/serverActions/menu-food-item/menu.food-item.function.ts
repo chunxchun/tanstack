@@ -5,7 +5,7 @@ import {
   fetchMenuFoodItemByMenuIdHandler,
   listMenuFoodItemHandler,
   updateMenuFoodItemByIdHandler,
-} from "./menuFoodItem.handler";
+} from "./menu.food-item.handler";
 import { idZodSchema, paginationZodSchema } from "@/zod/shared.zod.schema";
 import { createServerFn } from "@tanstack/react-start";
 import { zodValidator } from "@tanstack/zod-adapter";
@@ -43,11 +43,12 @@ export const fetchMenuFoodItemByMenuIdFn = createServerFn({ method: "GET" })
 export const updateMenuFoodItemByIdFn = createServerFn({ method: "POST" })
   .validator(zodValidator(updateMenuFoodItemZodSchema))
   .handler(async ({ data }) =>
-    updateMenuFoodItemByIdHandler(Number(data.id), data as UpdateMenuFoodItemType),
+    updateMenuFoodItemByIdHandler(
+      Number(data.id),
+      data as UpdateMenuFoodItemType,
+    ),
   );
 
 export const deleteMenuFoodItemByIdFn = createServerFn({ method: "GET" })
   .validator(zodValidator(idZodSchema))
-  .handler(async ({ data }) =>
-    deleteMenuFoodItemByIdHandler(Number(data.id)),
-  );
+  .handler(async ({ data }) => deleteMenuFoodItemByIdHandler(Number(data.id)));

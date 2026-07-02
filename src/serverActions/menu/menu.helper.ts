@@ -1,4 +1,4 @@
-import type{
+import type {
   InsertMenuWithFoodItemsType,
   MenuFoodItemType,
   SelectMenuType,
@@ -10,7 +10,7 @@ import {
   createMenuFoodItemFn,
   deleteMenuFoodItemByIdFn,
   fetchMenuFoodItemByMenuIdFn,
-} from "../menuFoodItem/menuFoodItem.function";
+} from "../menu-food-item/menu.food-item.function";
 import { getImageUrl } from "@/lib/shared.helper";
 import { createMenuFn, updateMenuByIdFn } from "./menu.function";
 
